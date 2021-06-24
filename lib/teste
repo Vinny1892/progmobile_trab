@@ -1,0 +1,64 @@
+{
+    "orders":[
+        {
+            "id": 2,
+            "precoTotal": "55435345.3",
+            "client": {"id": 3, "cpf": "45454546456"},
+            "cart": [
+                {
+                    "id": 4,
+                    "name": "caderno",
+                    "price": 20,
+                    "provider_cnpj": "4324252543324",
+                    "description": "caderno do BTS"
+                },
+                {
+                    "id": 3,
+                    "name": "vinicius",
+                    "price": 3,
+                    "provider_cnpj": "98765",
+                    "description": "programador raiz"
+                },
+            ],
+        }
+    ],
+    "products": [
+        {
+            "id": 2,
+            "name": "lucas sandim silva",
+            "price": 99999,
+            "provider_cnpj": "99999999",
+            "description": "Dev C# flutter"
+        },
+        {
+            "id": 3,
+            "name": "vinicius",
+            "price": 3,
+            "provider_cnpj": "98765",
+            "description": "programador raiz"
+        },
+        {
+            "id": 4,
+            "name": "caderno",
+            "price": 20,
+            "provider_cnpj": "4324252543324",
+            "description": "caderno do BTS"
+        }
+    ],
+    "carts": [
+        {
+            "productListId": [
+                "2",
+                "4"
+            ],
+            "id": 1,
+        },
+        {
+            "productListId": [
+                "2",
+                "3"
+            ],
+            "id": 2
+        },
+    ]
+}
