@@ -22,7 +22,7 @@ class _CartPageState extends State<CartPage> {
   Cart cart;
   CartController cartController = CartController();
   ProductController productController = ProductController();
-  StreamController streamController = StreamController();
+  StreamController<Cart> streamController = StreamController<Cart>();
   @override
   void initState() {
     super.initState();
@@ -62,11 +62,11 @@ class _CartPageState extends State<CartPage> {
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: StreamBuilder(
+        child: StreamBuilder<Cart>(
           stream: streamController.stream,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<Cart> snapshot) {
             if (snapshot.hasData) {
-              var data = snapshot.data;
+              Cart data = snapshot.data;
               return Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +92,8 @@ class _CartPageState extends State<CartPage> {
                     Padding(
                       padding: EdgeInsets.all(10),
                     ),
-                    Text(data.products[0].name)
+                    Text(data.productListId.toString()),
+                    Text(data.products.toString())
                   ],
                 ),
               );
