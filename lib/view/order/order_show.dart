@@ -1,4 +1,5 @@
 import 'package:ecommerce_frontend/controller/OrderController.dart';
+import 'package:ecommerce_frontend/controller/ProductController.dart';
 import 'package:ecommerce_frontend/model/Cart.dart';
 import 'package:ecommerce_frontend/model/Order.dart';
 import 'package:ecommerce_frontend/model/Product.dart';
@@ -13,9 +14,29 @@ class OrderStatefulWidget extends StatefulWidget {
 }
 
 class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
-  final Cart cart;
-  _OrderStatefulWidgetState(this.cart);
-  var orderController = OrderController();
+  Cart cart;
+  Future<Order> order;
+  List<Product> products;
+  _OrderStatefulWidgetState(Cart cart) {
+    this.cart = cart;
+  }
+
+  void initState() {
+    super.initState();
+    _getProductsByCart(this.cart);
+    Order order = new Order(
+        clientId: this.cart.clientId as int,
+        paymentMethod: 0,
+        products: this.products);
+    //this.order = order as Future<Order>;
+    this.order = Future<Order>.value(order);
+  }
+
+  void _getProductsByCart(Cart cart) async {
+    this.products =
+        await ProductController().getProductsByCart(cart.productListId);
+  }
+  //var orderController = OrderController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +47,8 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
       ),
       body: Container(
         child: FutureBuilder(
-          future: orderController.finalShop(cart),
+          //future: orderController.finalShop(cart),
+          future: order,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               var order = snapshot.data;
@@ -53,10 +75,9 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
                       style: TextStyle(fontSize: 20),
                     ),
                     ListView.builder(
-                      itemCount: snapshot.data.products.length,
+                      itemCount: snapshot.data.order.products.length,
                       itemBuilder: (BuildContext context, int index) {
-                        var product = snapshot.data.products[index];
-                        //var data = snapshot.data[index];
+                        var product = snapshot.data.order.products[index];
                         return Card(
                             child: ListTile(
                           title: Text(
