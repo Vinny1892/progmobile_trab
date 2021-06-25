@@ -38,6 +38,7 @@ class _CartPageState extends State<CartPage> {
 
   void _loadCartAndProducts() async {
     Cart cart = await cartController.getCartByClientId(user.id);
+    streamController.sink.add(cart);
     cart.products =
         await ProductController().getProductsByCart(cart.productListId);
     streamController.sink.add(cart);
@@ -67,33 +68,43 @@ class _CartPageState extends State<CartPage> {
           builder: (BuildContext context, AsyncSnapshot<Cart> snapshot) {
             if (snapshot.hasData) {
               Cart data = snapshot.data;
-              return Card(
+              return Container(
+                height: double.infinity,
+                width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "ID do cliente: ${data.clientId}",
+                      "Carrinho do ${user.name}",
                       style: TextStyle(fontSize: 20),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
                     ),
-                    Text(
-                      "Ultima atualização: ${data.updatedAt}",
-                      style: TextStyle(fontSize: 20),
+                    Padding(
+                      padding: EdgeInsets.all(10),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
                     ),
-                    Text(
-                      "Status: ${data.status}",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                    ),
-                    Text(data.productListId.toString()),
-                    Text(data.products.toString())
+                    if (data.products != null && data.products.length != 0)
+                      Expanded(
+                          child: ListView.builder(
+                              itemCount: data.products.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                print(data.products[index].name);
+                                return ListTile(
+                                  title: Text(data.products[index].name),
+                                  trailing: Container(
+                                      width: 100,
+                                      child: Row(children: [
+                                        IconButton(
+                                            icon: Icon(
+                                                Icons.remove_shopping_cart),
+                                            onPressed: () {}),
+                                      ])),
+                                );
+                              }))
                   ],
                 ),
               );

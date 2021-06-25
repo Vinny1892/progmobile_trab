@@ -29,7 +29,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Zamazon',
       theme: ThemeData(
         // platform: TargetPlatform.iOS,
         primarySwatch: Colors.blue,

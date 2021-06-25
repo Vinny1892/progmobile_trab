@@ -22,7 +22,6 @@ class Product {
   double price;
   String provider_cnpj;
   String description;
-
   Product(
       {this.id, this.name, this.price, this.provider_cnpj, this.description});
 
