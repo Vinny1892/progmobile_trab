@@ -4,10 +4,10 @@ class Order {
   int id;
   double totalPrice;
   int paymentMethod;
-  int clientId;
+  String clientId;
   List<Product> products;
 
-  Order({int id, int paymentMethod, int clientId, List<Product> products}) {
+  Order({int id, int paymentMethod, String clientId, List<Product> products}) {
     this.paymentMethod = paymentMethod;
     this.clientId = clientId;
     this.products = products;

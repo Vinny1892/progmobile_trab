@@ -33,9 +33,9 @@ class ProductController {
   Future<List<Product>> getProductsByCart(List<dynamic> productsIDs) async {
     print("AQUI PRODUCTS BY CART");
     List<Product> products = [];
-    if (productsIDs == null) {
-      return Future<List<Product>>.value(products);
-    }
+
+    if (productsIDs == null) return Future<List<Product>>.value(products);
+
     for (final productId in productsIDs) {
       Product product = await new ProductRepository().getById(productId);
       if (product != null) {

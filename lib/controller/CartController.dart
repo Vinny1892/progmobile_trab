@@ -12,8 +12,8 @@ class CartController {
     //return products as List<Product>;
   }
 
-  Future<bool> removeProduct(Cart cart) async {
-    bool result = await CartRepository().removeProduct(cart);
+  Future<bool> removeProduct(Cart cart, String productIDRemove) async {
+    bool result = await CartRepository().removeProduct(cart, productIDRemove);
     if (result) return true;
     return false;
   }
@@ -36,5 +36,11 @@ class CartController {
     var response =
         new CartRepository().addProduct(product.id.toString(), clientId);
     return response;
+  }
+
+  Future<bool> changeStatusCartToFalse(String cartID, bool status) async {
+    bool resp = await CartRepository().ChangeStatusCartToFalse(cartID, status);
+    if (resp) return true;
+    return false;
   }
 }

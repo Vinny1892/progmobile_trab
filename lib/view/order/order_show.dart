@@ -1,8 +1,16 @@
+import 'dart:async';
+
+import 'package:ecommerce_frontend/controller/CartController.dart';
 import 'package:ecommerce_frontend/controller/OrderController.dart';
 import 'package:ecommerce_frontend/controller/ProductController.dart';
 import 'package:ecommerce_frontend/model/Cart.dart';
 import 'package:ecommerce_frontend/model/Order.dart';
 import 'package:ecommerce_frontend/model/Product.dart';
+import 'package:ecommerce_frontend/model/User.dart';
+import 'package:ecommerce_frontend/routes/app_routes.dart';
+import 'package:ecommerce_frontend/shared/store/user_store.dart';
+import 'package:ecommerce_frontend/shared/user_session.dart';
+import 'package:ecommerce_frontend/view/components/DropDownButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +23,9 @@ class OrderStatefulWidget extends StatefulWidget {
 
 class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
   Cart cart;
-  Future<Order> order;
+  UserStore userStore = UserSession.instance;
+  User user = User();
+  StreamController<Order> _streamController = StreamController<Order>();
   List<Product> products;
   _OrderStatefulWidgetState(Cart cart) {
     this.cart = cart;
@@ -23,41 +33,54 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
 
   void initState() {
     super.initState();
-    _getProductsByCart(this.cart);
-    Order order = new Order(
-        clientId: this.cart.clientId as int,
-        paymentMethod: 0,
-        products: this.products);
-    //this.order = order as Future<Order>;
-    this.order = Future<Order>.value(order);
+    user = userStore.getUser();
+    _initComponent(this.cart);
   }
 
-  void _getProductsByCart(Cart cart) async {
+  void _initComponent(Cart cart) async {
     this.products =
         await ProductController().getProductsByCart(cart.productListId);
+    Order order = Order(
+        clientId: this.cart.clientId,
+        paymentMethod: 0,
+        products: this.products);
+    _streamController.sink.add(order);
   }
+
   //var orderController = OrderController();
+  void dispose() {
+    super.dispose();
+    _streamController.close();
+  }
+
+  _checkout(Cart cart) async {
+    bool isCartStatusUpdatedChange =
+        await CartController().changeStatusCartToFalse(cart.id, false);
+    if (isCartStatusUpdatedChange)
+      Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCT_LIST);
+    if (!isCartStatusUpdatedChange)
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Falha ao finalizar compra')));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Produtos'),
-        //actions: meunuButtonPerUser(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Order'),
       ),
       body: Container(
-        child: FutureBuilder(
-          //future: orderController.finalShop(cart),
-          future: order,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+        child: StreamBuilder<Order>(
+          stream: _streamController.stream,
+          builder: (BuildContext context, AsyncSnapshot<Order> snapshot) {
             if (snapshot.hasData) {
               var order = snapshot.data;
               return Container(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Nome do cliente: ${order.client.name}",
+                      "Nome do cliente: ${user.name}",
                       style: TextStyle(fontSize: 20),
                     ),
                     Padding(
@@ -70,30 +93,53 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
                     Padding(
                       padding: EdgeInsets.all(10),
                     ),
-                    Text(
-                      "Metodo de pagamento: ${order.paymentMethod}",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    ListView.builder(
-                      itemCount: snapshot.data.order.products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var product = snapshot.data.order.products[index];
-                        return Card(
-                            child: ListTile(
-                          title: Text(
-                            product.name,
-                            style: TextStyle(fontSize: 18),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Metodo de pagamento:",
+                            style: TextStyle(fontSize: 20),
                           ),
-                          subtitle: Text("Preço: " + product.price.toString()),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => DetailPage(product)));
-                          },
-                        ));
-                      },
+                          Padding(padding: EdgeInsets.only(right: 20)),
+                          DropDownButton(items: ["Cartão", "Dinheiro"]),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20),
+                          ),
+                        ],
+                      ),
                     ),
+                    Container(
+                      height: 200,
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data.products.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Product product = snapshot.data.products[index];
+                            return Card(
+                                child: ListTile(
+                              title: Text(
+                                product.name,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              subtitle:
+                                  Text("Preço:   ${product.price.toString()}"),
+                              onTap: () {
+                                _checkout(cart);
+                              },
+                            ));
+                          },
+                        ),
+                      ),
+                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 20),
+                    // ),
+                    ElevatedButton(
+                        onPressed: () {
+                          _checkout(this.cart);
+                        },
+                        child: Text("Finalizar Compra"))
                   ],
                 ),
               );
@@ -104,44 +150,5 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
         ),
       ),
     );
-  }
-}
-
-// detalhes de um produto
-class DetailPage extends StatelessWidget {
-  final Product product;
-  //const ProductTile(this.product);
-  DetailPage(this.product);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(product.name),
-        ),
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Descrição: ${product.description}",
-                style: TextStyle(fontSize: 20),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Text(
-                "Preço: ${product.price}",
-                style: TextStyle(fontSize: 20),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Text(
-                "CNPJ do fornecedor: ${product.provider_cnpj}",
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-        ));
   }
 }

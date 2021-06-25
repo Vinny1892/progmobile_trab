@@ -9,6 +9,34 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class CartRepository {
   Dio _dio = Dio(BaseOptions(baseUrl: dotenv.env['BASE_URL']));
 
+  Future<bool> ChangeStatusCartToFalse(String cartID, bool status) async {
+    try {
+      UserStore userStore = UserSession.instance;
+      User user = userStore.getUser();
+      var response = await _dio.put('cart/status',
+          options: Options(headers: {
+            "Authorization": "Bearer ${user.token}",
+
+            "Access-Control-Allow-Origin":
+                "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials":
+                true, // Required for cookies, authorization headers with HTTPS
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "PUT, OPTIONS"
+          }),
+          data: {
+            'id': cartID,
+            'status': status,
+          });
+      print(response.data);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   //o microservico cart, recebe 1 productId e o add ao array de productsId
   Future<bool> addProduct(String productID, String clientID) async {
     try {
@@ -34,14 +62,15 @@ class CartRepository {
       return true;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 
-  Future<bool> removeProduct(Cart cart) async {
+  Future<bool> removeProduct(Cart cart, String productID) async {
     try {
       UserStore userStore = UserSession.instance;
       User user = userStore.getUser();
-      var response = await _dio.put('cart/$cart.id',
+      var response = await _dio.delete('cart/${cart.id}',
           options: Options(headers: {
             "Authorization": "Bearer ${user.token}",
 
@@ -54,8 +83,8 @@ class CartRepository {
             "Access-Control-Allow-Methods": "PUT, OPTIONS"
           }),
           data: {
-            'client_id': cart.clientId,
-            'product_list': [cart.productListId],
+            'id': cart.id,
+            'product_list': [productID],
           });
       print(response.data);
       return true;

@@ -44,9 +44,9 @@ class _CartPageState extends State<CartPage> {
     streamController.sink.add(cart);
   }
 
-  void _removeProductCart(Cart cart) async {
-    await cartController.removeProduct(cart);
-    await _loadCartAndProducts;
+  void _removeProductCart(Cart cart, String productID) async {
+    await cartController.removeProduct(cart, productID);
+    _loadCartAndProducts();
   }
 
   @override
@@ -105,7 +105,10 @@ class _CartPageState extends State<CartPage> {
                                             icon: Icon(
                                                 Icons.remove_shopping_cart),
                                             onPressed: () {
-                                              _removeProductCart(data);
+                                              _removeProductCart(
+                                                  data,
+                                                  data.products[index].id
+                                                      .toString());
                                             }),
                                       ])),
                                 );
