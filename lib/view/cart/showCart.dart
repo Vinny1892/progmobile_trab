@@ -44,7 +44,10 @@ class _CartPageState extends State<CartPage> {
     streamController.sink.add(cart);
   }
 
-  // void _removeProductCart(String id) {}
+  void _removeProductCart(Cart cart) async {
+    await cartController.removeProduct(cart);
+    await _loadCartAndProducts;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +104,9 @@ class _CartPageState extends State<CartPage> {
                                         IconButton(
                                             icon: Icon(
                                                 Icons.remove_shopping_cart),
-                                            onPressed: () {}),
+                                            onPressed: () {
+                                              _removeProductCart(data);
+                                            }),
                                       ])),
                                 );
                               }))

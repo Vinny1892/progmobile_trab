@@ -37,6 +37,34 @@ class CartRepository {
     }
   }
 
+  Future<bool> removeProduct(Cart cart) async {
+    try {
+      UserStore userStore = UserSession.instance;
+      User user = userStore.getUser();
+      var response = await _dio.put('cart/$cart.id',
+          options: Options(headers: {
+            "Authorization": "Bearer ${user.token}",
+
+            "Access-Control-Allow-Origin":
+                "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials":
+                true, // Required for cookies, authorization headers with HTTPS
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "PUT, OPTIONS"
+          }),
+          data: {
+            'client_id': cart.clientId,
+            'product_list': [cart.productListId],
+          });
+      print(response.data);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<Cart> getCartByClientId(String clientId) async {
     Cart cart;
     print(dotenv.env["BASE_URL"]);

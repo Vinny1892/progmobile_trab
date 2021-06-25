@@ -12,6 +12,12 @@ class CartController {
     //return products as List<Product>;
   }
 
+  Future<bool> removeProduct(Cart cart) async {
+    bool result = await CartRepository().removeProduct(cart);
+    if (result) return true;
+    return false;
+  }
+
   Future<Cart> getCartByClientId(String clientId) async {
     Cart cart = await new CartRepository().getCartByClientId(clientId);
     // cart.products =
