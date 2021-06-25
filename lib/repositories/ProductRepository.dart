@@ -43,12 +43,7 @@ class ProductRepository {
       //await Dio().get('http://localhost:3000/product?id=' + productId);
       //print(response.data.toString());
       var data = response.data;
-      product = new Product(
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          provider_cnpj: data.provider_cnpj);
+      product = Product.fromJson(data);
     } catch (e) {
       print(e);
     }
