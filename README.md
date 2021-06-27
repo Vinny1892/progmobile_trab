@@ -1,13 +1,14 @@
 # ecommerce_frontend
 
-Aplicação front-end para o projeto ecommerce,
-onde o foco não é desenvolver o projeto em si,
-mas usar novas tecnoligas.
+O Desenvolvimento desta aplicação foi feito para dar base a um 
+projeto de E-Commerce tendo total foco no front-end da aplicação.
+Assim o foco foi utilizar novas técnologias e nao focar estritamente no melhor 
+desempenho e possibilidade possivel para o cenário do projeto. 
 
-Esta aplicação é feita em Flutter, e seus dados são servidos a partir do micro serviço API-GATEWAY, que por sua vez requisita o respectivo micro serviço.
+Esta aplicação foi feita em Flutter e seus serviços vieram a partir de um microservicço API-GATEWAY, que por sua vez é requisita ao microserviço.
 
-Esta aplicação flutter não tem otimizações minimas,
-pois o foco foi lidar com diversos micro serviços se comunicando via gRPC.
+Esta aplicação flutter não tem as otimizações minimas,
+pois o foco foi lidar com diversos microserviços. se comunicando via gRPC.
 
 suas telas são:
     LOGIN, REGISTER: controler de USER(FUNCIONARIO, CLIENTE);
