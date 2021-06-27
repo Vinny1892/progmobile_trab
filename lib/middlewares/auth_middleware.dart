@@ -16,6 +16,7 @@ class AuthMidlleware {
     return LoginPage();
   }
 
+
   static Widget authOnlyEmployee(Widget fromPage) {
     UserStore userStore = UserSession.instance;
     User user = userStore.getUser();
@@ -34,4 +35,6 @@ class AuthMidlleware {
     }
     return fromPage;
   }
+  
 }
+

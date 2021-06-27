@@ -26,6 +26,7 @@ class UserRepository {
     }
   }
 
+
   Future<User> login(String email, String password) async {
     print(dotenv.env["BASE_URL"]);
     try {
@@ -55,6 +56,7 @@ class UserRepository {
       print(e);
     }
   }
+
   // Future<User> login(String email, String password) async {
   //   try {
   //     Map<String, dynamic> userLogin = {"email": email, "password": password};
@@ -118,9 +120,11 @@ class UserRepository {
     return User();
   }
 
+
   Future<User> delete(String id) async {
     UserStore userStore = UserSession.instance;
     User user = userStore.getUser();
+    
 
     Response response = await _dio.delete("user/$id",
         options: Options(headers: {

@@ -11,10 +11,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
+
 class CartPage extends StatefulWidget {
   @override
   _CartPageState createState() => new _CartPageState();
 }
+
 
 class _CartPageState extends State<CartPage> {
   UserStore userStore = UserSession.instance;
@@ -43,6 +45,7 @@ class _CartPageState extends State<CartPage> {
         await ProductController().getProductsByCart(cart.productListId);
     streamController.sink.add(cart);
   }
+
 
   // void _removeProductCart(String id) {}
 
@@ -107,6 +110,7 @@ class _CartPageState extends State<CartPage> {
                               }))
                   ],
                 ),
+                
               );
             } else {
               return Container(child: Center(child: Text("Loading...")));

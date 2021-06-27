@@ -17,6 +17,7 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
   _OrderStatefulWidgetState(this.cart);
   var orderController = OrderController();
 
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -86,6 +87,7 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
   }
 }
 
+
 // detalhes de um produto
 class DetailPage extends StatelessWidget {
   final Product product;
@@ -122,5 +124,6 @@ class DetailPage extends StatelessWidget {
             ],
           ),
         ));
+        
   }
 }
