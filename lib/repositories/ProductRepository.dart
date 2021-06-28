@@ -60,7 +60,7 @@ class ProductRepository {
           data: {
             'id': product.id,
             'name': product.name,
-            'price': product.price,
+            'price': product.price.toString(),
             'provider_cnpj': product.provider_cnpj,
             'description': product.description,
           });
