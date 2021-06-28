@@ -19,7 +19,8 @@
 class Product {
   int id;
   String name;
-  double price;
+  //double price;
+  String price;
   String provider_cnpj;
   String description;
   Product(
@@ -28,7 +29,7 @@ class Product {
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    price = json['price'];
+    price = json['price'].toString();
     provider_cnpj = json['provider_cnpj'];
     description = json['description'];
   }

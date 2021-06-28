@@ -20,7 +20,7 @@ class Order {
   double _calcTotalPrice(List<Product> products) {
     double totalPrice = 0.0;
     for (Product product in products) {
-      totalPrice += product.price;
+      totalPrice += double.parse(product.price);
     }
     return totalPrice;
   }

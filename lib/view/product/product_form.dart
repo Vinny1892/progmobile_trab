@@ -47,7 +47,8 @@ class _ProductFormState extends State<ProductForm> {
                   Product product = new Product(
                       id: _formData['id'],
                       name: _formData['name'] as String,
-                      price: ((_formData['price']) as double) + .0,
+                      //price: ((_formData['price']) as double) + .0,
+                      price: _formData['price'],
                       provider_cnpj: _formData['provider_cnpj'] as String,
                       description: _formData['description'] as String);
                   if (product.id == null) {

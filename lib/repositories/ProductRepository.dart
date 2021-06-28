@@ -19,7 +19,8 @@ class ProductRepository {
         Product product = new Product(
             id: u["id"],
             name: u["name"],
-            price: u["price"] as double,
+            //price: u["price"] as double,
+            price: (u["price"]).toString(),
             provider_cnpj: u["provider_cnpj"],
             description: u["description"]);
         products.add(product);
