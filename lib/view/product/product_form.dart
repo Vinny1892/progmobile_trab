@@ -23,7 +23,8 @@ class _ProductFormState extends State<ProductForm> {
       _formData['id'] = product.id;
       _formData['name'] = product.name;
       _formData['description'] = product.description;
-      _formData['price'] = product.price.toString();
+      //_formData['price'] = product.price.toString();
+      _formData['price'] = product.price;
       _formData['provider_cnpj'] = product.provider_cnpj;
     }
   }
@@ -48,7 +49,7 @@ class _ProductFormState extends State<ProductForm> {
                       id: _formData['id'],
                       name: _formData['name'] as String,
                       //price: ((_formData['price']) as double) + .0,
-                      price: _formData['price'],
+                      price: _formData['price'] as String,
                       provider_cnpj: _formData['provider_cnpj'] as String,
                       description: _formData['description'] as String);
                   if (product.id == null) {
@@ -75,12 +76,12 @@ class _ProductFormState extends State<ProductForm> {
                   onSaved: (value) => _formData['name'] = value,
                 ),
                 TextFormField(
-                  initialValue: _formData['price'],
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'Preço'),
-                  onSaved: (value) =>
-                      _formData['price'] = (double.parse(value)) + .0,
-                ),
+                    initialValue: _formData['price'],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Preço'),
+                    onSaved: (value) =>
+                        //_formData['price'] = (double.parse(value)) + .0,
+                        _formData['price'] = value),
                 TextFormField(
                   initialValue: _formData['provider_cnpj'],
                   decoration: InputDecoration(labelText: 'CNPJ do fornecedor'),
