@@ -37,7 +37,7 @@ class ProductController {
     if (productsIDs == null) return Future<List<Product>>.value(products);
 
     for (final productId in productsIDs) {
-      Product product = await new ProductRepository().getById(productId);
+      Product product = await ProductRepository().getById(productId);
       if (product != null) {
         products.add(product);
         print("ADICIONANDO PRODUTO NO ARRAY DE PRODUTO");

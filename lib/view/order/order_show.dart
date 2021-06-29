@@ -87,7 +87,7 @@ class _OrderStatefulWidgetState extends State<OrderStatefulWidget> {
                       padding: EdgeInsets.all(10),
                     ),
                     Text(
-                      "Preço total: ${order.totalPrice}",
+                      "Preço total: ${order.totalPrice.toStringAsFixed(2)}",
                       style: TextStyle(fontSize: 20),
                     ),
                     Padding(
