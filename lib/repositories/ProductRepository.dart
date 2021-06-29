@@ -55,15 +55,18 @@ class ProductRepository {
     try {
       UserStore userStore = UserSession.instance;
       User user = userStore.getUser();
+      var data = {
+        'id': product.id,
+        'name': product.name,
+        //'price': product.price.toString(),
+        'price': double.parse(product.price),
+        'provider_cnpj': product.provider_cnpj,
+        'description': product.description,
+      };
+      print("data['price'] :${data['price']}");
       var response = await _dio.post('product',
           options: Options(headers: {"Authorization": "Bearer ${user.token}"}),
-          data: {
-            'id': product.id,
-            'name': product.name,
-            'price': product.price.toString(),
-            'provider_cnpj': product.provider_cnpj,
-            'description': product.description,
-          });
+          data: data);
       if (response.data == null) {
         return false;
       }
@@ -83,7 +86,7 @@ class ProductRepository {
           data: {
             'id': id,
             'name': product.name,
-            'price': product.price,
+            'price': double.parse(product.price),
             'provider_cnpj': product.provider_cnpj,
             'description': product.description,
           });
