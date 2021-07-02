@@ -5,7 +5,7 @@ Descrição:
 O Desenvolvimento desta aplicação Flutter com as regras de negócio baseado em um simples E-Commerce, tendo maior foco no front-end da aplicação.
 Assim, o foco foi utilizar novas tecnologias, principalmente o Flutter, e não priorizamos o desempenho. 
 
-Esta aplicação foi feita em Flutter e seus serviços vieram a partir de um micro serviço API-GATEWAY, que por sua vez é requisitado ao micro serviço. Toda a regra de negócio está separada do front-and, e feita no back-end, e no back-end está dentro de containers docker, e via API o front-end consome os serviços criados.
+Esta aplicação foi feita em Flutter e seus serviços vieram a partir de um micro serviço API-GATEWAY, que por sua vez é requisitado ao micro serviço. Toda a regra de negócio está separada do front-end, e feita no back-end, e o back-end está dentro de containers docker, aonde via API faz com que o front-end consiga consumir os serviços criados.
 
 
 suas telas são:
