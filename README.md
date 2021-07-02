@@ -1,19 +1,26 @@
 # ecommerce_frontend
 
-O Desenvolvimento desta aplicação foi feito para dar base a um 
-projeto de E-Commerce tendo total foco no front-end da aplicação.
-Assim o foco foi utilizar novas técnologias e nao focar estritamente no melhor 
-desempenho e possibilidade possivel para o cenário do projeto. 
+Descrição:
 
-Esta aplicação foi feita em Flutter e seus serviços vieram a partir de um microservicço API-GATEWAY, que por sua vez é requisita ao microserviço.
+O Desenvolvimento desta aplicação Flutter com as regras de negócio baseado em um simples E-Commerce, tendo maior foco no front-end da aplicação.
+Assim, o foco foi utilizar novas tecnologias, principalmente o Flutter, e não priorizamos o desempenho. 
 
-Esta aplicação flutter não tem as otimizações minimas,
-pois o foco foi lidar com diversos microserviços. se comunicando via gRPC.
+Esta aplicação foi feita em Flutter e seus serviços vieram a partir de um micro serviço API-GATEWAY, que por sua vez é requisitado ao micro serviço. Toda a regra de negócio está separada do front-and, e feita no back-end, e no back-end está dentro de containers docker, e via API o front-end consome os serviços criados.
+
 
 suas telas são:
-    LOGIN, REGISTER: controler de USER(FUNCIONARIO, CLIENTE);
-    PRODUCT: CRUD de produtos, clientes adiciona produtos ao seu carrinho de compra;
-    CART: mostrar o que o cliente logado adiciou ao CART;
+    LOGIN, REGISTER: controle de USER(FUNCIONARIO, CLIENTE);
+    PRODUCT: CRUD de produtos, clientes adicionar produtos ao seu carrinho de compra;
+    CART: mostrar o que o cliente logado adicionou ao CART;
     ORDER: exibe compra realizada do cliente dos produtos que estavam no carrinho;
 
 o arquivo .env no qual tem o item base_url é usado para  url da api
+
+O nossos usuários são: Cliente e Funcionário,
+onde Funcionário realiza CRUD de: funcionário e produto
+e o Cliente pode inserir e remover produtos em seu carrinho de compra, e depois efetivar a compra dos produtos contidos no carrinho de compra
+
+
+
+Nós acabamos não se atentando para "Economia de Energia", pois tivemos dificuldades técnicas com o Flutter.
+Nós tivemos cuidado com "Segurança", todas as telas para ser acessadas precisam de um TOKEN, no qual é preciso estar logado para receber um TOKEN. A senha do usuário passa por uma função HASH para ser armazenada no banco de dados.
